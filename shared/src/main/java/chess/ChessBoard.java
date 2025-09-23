@@ -1,7 +1,6 @@
 package chess;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -129,7 +128,7 @@ public class ChessBoard {
 
     @Override
     public int hashCode() {
-        return Arrays.deepHashCode(board);
+        return Objects.hash(toString());
     }
 
     public boolean emptySpaceOnBoard(ChessPosition position) {
