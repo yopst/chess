@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -92,5 +93,46 @@ public class ChessBoard {
 
         addPiece(whiteKingPosition, whiteKing);
         addPiece(blackKingPosition, blackKing);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (ChessPiece[] row: board) {
+            for (ChessPiece piece: row) {
+                if (piece != null) {
+                    sb.append(piece);
+                    sb.append(",");
+                }
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessBoard that = (ChessBoard) o;
+        return Objects.equals(this.toString(), that.toString());
+    }
+
+    public boolean emptySpaceOnBoard(ChessPosition position) {
+        if (!this.onBoard(position)) {
+            return false;
+        }
+        return this.getPiece(position) == null;
+    }
+
+    public boolean onBoard(ChessPosition position) {
+        return position.getRow() <= 8
+                && position.getRow() >= 1
+                && position.getColumn() <= 8
+                && position.getColumn() >= 1;
     }
 }
