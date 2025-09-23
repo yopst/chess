@@ -34,7 +34,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        return board[position.getRow()-1][position.getColumn()];
+        return board[position.getRow()-1][position.getColumn()-1];
     }
 
     /**
@@ -95,20 +95,25 @@ public class ChessBoard {
         addPiece(blackKingPosition, blackKing);
     }
 
-    @Override
-    public String toString() {
+    public String toString() { //prints from blacks perspective
         StringBuilder sb = new StringBuilder();
-        for (ChessPiece[] row: board) {
+        for (ChessPiece[] row : board) {
             for (ChessPiece piece: row) {
+                sb.append("|");
                 if (piece != null) {
                     sb.append(piece);
-                    sb.append(",");
                 }
+                else {
+                    sb.append(" ");
+                }
+                sb.append("|");
             }
             sb.append("\n");
         }
         return sb.toString();
     }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -121,6 +126,8 @@ public class ChessBoard {
         ChessBoard that = (ChessBoard) o;
         return Objects.equals(this.toString(), that.toString());
     }
+
+
 
     public boolean emptySpaceOnBoard(ChessPosition position) {
         if (!this.onBoard(position)) {

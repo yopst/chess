@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Represents a single chess piece
@@ -52,7 +53,7 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+        return getCalc().calcMoves(board, myPosition);
     }
 
     @Override
@@ -91,5 +92,41 @@ public class ChessPiece {
             default:
                 throw new IllegalArgumentException("Unknown Piece Type: " + type);
         }
+    }
+
+    private MoveCalc getCalc() {
+        switch (type) {
+            case KING:
+                return new KingCalc();
+            case QUEEN:
+                return new QueenCalc();
+            case BISHOP:
+                return new BishopCalc();
+            case KNIGHT:
+                return new KnightCalc();
+            case ROOK:
+                return new RookCalc();
+            case PAWN:
+                return new PawnCalc();
+            default:
+                throw new RuntimeException("Unexpected Type in getCalc");
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        ChessPiece that = (ChessPiece) obj;
+        return Objects.equals(this.toString(), that.toString());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, type);
     }
 }

@@ -20,6 +20,11 @@ public class ChessMove {
         this.endPosition = endPosition;
         this.promotionPiece = promotionPiece;
     }
+    public ChessMove(ChessPosition startPosition, ChessPosition endPosition) {
+        this.startPosition = startPosition;
+        this.endPosition = endPosition;
+        this.promotionPiece = null;
+    }
 
     /**
      * @return ChessPosition of starting location
@@ -63,5 +68,14 @@ public class ChessMove {
         return Objects.equals(this.startPosition, that.startPosition) &&
                 Objects.equals(this.endPosition, that.endPosition) &&
                 this.promotionPiece == that.promotionPiece;
+    }
+
+    @Override
+    public String toString() {
+        return "ChessMove{" +
+                 startPosition +
+                "-> " + endPosition +
+                ", promotionPiece=" + promotionPiece +
+                '}';
     }
 }
