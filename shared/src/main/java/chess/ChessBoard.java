@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.Collection;
+
 /**
  * A chessboard that can hold and rearrange chess pieces.
  * <p>
@@ -42,19 +44,53 @@ public class ChessBoard {
         board = new ChessPiece[8][8];
 
         //set PAWNS
-        for (int column = 0; column <= 8; column++) {
+        for (int column = 1; column <= 8; column++) {
             ChessPiece whitePawn = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
             ChessPiece blackPawn = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN);
             addPiece(new ChessPosition(2, column), whitePawn);
             addPiece(new ChessPosition(7, column), blackPawn);
         }
         //set ROOKS
-        for (int column = 0; column <= 8; column +=7) {
+        for (int column = 1; column <= 8; column +=7) {
             ChessPiece whiteRook = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.ROOK);
             ChessPiece blackRook = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.ROOK);
             addPiece(new ChessPosition(1, column), whiteRook);
             addPiece(new ChessPosition(8, column), blackRook);
         }
 
+        //set KNIGHTS
+        for (int column = 2; column <= 7; column +=5) {
+            ChessPiece whiteKnight = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KNIGHT);
+            ChessPiece blackKnight = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KNIGHT);
+            addPiece(new ChessPosition(1, column), whiteKnight);
+            addPiece(new ChessPosition(8, column), blackKnight);
+        }
+        // set BISHOPS
+        for (int column = 3; column <= 6; column += 3) {
+            ChessPiece whiteBishop = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP);
+            ChessPiece blackBishop = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.BISHOP);
+            addPiece(new ChessPosition(1, column), whiteBishop);
+            addPiece(new ChessPosition(8, column), blackBishop);
+        }
+
+        //set QUEENS
+        ChessPiece whiteQueen = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.QUEEN);
+        ChessPiece blackQueen = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.QUEEN);
+
+        ChessPosition whiteQueenPosition = new ChessPosition(1,4);
+        ChessPosition blackQueenPosition = new ChessPosition(8,4);
+
+        addPiece(whiteQueenPosition, whiteQueen);
+        addPiece(blackQueenPosition, blackQueen);
+
+        //set KINGS
+        ChessPiece whiteKing = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KING);
+        ChessPiece blackKing = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING);
+
+        ChessPosition whiteKingPosition = new ChessPosition(1, 5);
+        ChessPosition blackKingPosition = new ChessPosition(8,5);
+
+        addPiece(whiteKingPosition, whiteKing);
+        addPiece(blackKingPosition, blackKing);
     }
 }
