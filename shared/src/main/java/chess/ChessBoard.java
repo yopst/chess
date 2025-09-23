@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -114,7 +115,6 @@ public class ChessBoard {
     }
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -127,7 +127,10 @@ public class ChessBoard {
         return Objects.equals(this.toString(), that.toString());
     }
 
-
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(board);
+    }
 
     public boolean emptySpaceOnBoard(ChessPosition position) {
         if (!this.onBoard(position)) {
