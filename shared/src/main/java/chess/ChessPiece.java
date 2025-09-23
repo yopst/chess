@@ -54,4 +54,42 @@ public class ChessPiece {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         throw new RuntimeException("Not implemented");
     }
+
+    @Override
+    public String toString() {
+        switch(type) {
+            case BISHOP:
+                if (color == ChessGame.TeamColor.BLACK) {
+                    return "b";
+                }
+                return "B";
+            case KNIGHT:
+                if (color == ChessGame.TeamColor.BLACK) {
+                    return "n";
+                }
+                return "N";
+            case ROOK:
+                if (color == ChessGame.TeamColor.BLACK) {
+                    return "r";
+                }
+                return "R";
+            case QUEEN:
+                if (color == ChessGame.TeamColor.BLACK) {
+                    return "q";
+                }
+                return "Q";
+            case PAWN:
+                if (color == ChessGame.TeamColor.BLACK) {
+                    return "p";
+                }
+                return "P";
+            case KING:
+                if (color == ChessGame.TeamColor.BLACK) {
+                    return "k";
+                }
+                return "K";
+            default:
+                throw new IllegalArgumentException("Unknown Piece Type: " + type);
+        }
+    }
 }
