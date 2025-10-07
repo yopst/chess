@@ -9,16 +9,23 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessGame {
+    private TeamColor turn;
+    private ChessBoard board;
+    private ChessBoard lastBoard;
+
+    public boolean finished;
 
     public ChessGame() {
-
+        setTeamTurn(TeamColor.WHITE);
+        board = new ChessBoard();
+        board.resetBoard();
     }
 
     /**
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
-        throw new RuntimeException("Not implemented");
+        return turn;
     }
 
     /**
@@ -27,7 +34,16 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        throw new RuntimeException("Not implemented");
+        turn = team;
+    }
+
+    private void changeTurns() {
+        if (turn == TeamColor.WHITE) {
+            turn = TeamColor.BLACK;
+        }
+        else {
+            turn = TeamColor.WHITE;
+        }
     }
 
     /**
@@ -76,7 +92,7 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        return isInCheck(teamColor) && noValidMoves(teamColor);
     }
 
     /**
@@ -87,8 +103,16 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+        if (teamColor != turn) {
+            return false;
+        }
+        return !isInCheck(teamColor) && noValidMoves(teamColor);
+    }
+
+    public boolean noValidMoves(TeamColor color) {
         throw new RuntimeException("Not implemented");
     }
+
 
     /**
      * Sets this game's chessboard with a given board
@@ -96,7 +120,7 @@ public class ChessGame {
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
-        throw new RuntimeException("Not implemented");
+        this.board = board;
     }
 
     /**
@@ -105,6 +129,24 @@ public class ChessGame {
      * @return the chessboard
      */
     public ChessBoard getBoard() {
-        throw new RuntimeException("Not implemented");
+        return board;
+    }
+
+    public ChessPiece promotePiece(ChessMove move) {
+        if (move.getPromotionPiece() != null) {
+            ChessPiece newPiece;
+            TeamColor pieceColor = turn;
+            ChessPiece.PieceType type = move.getPromotionPiece();
+            newPiece = switch (type) {
+                case PAWN -> new ChessPiece(pieceColor, ChessPiece.PieceType.PAWN);
+                case ROOK -> new ChessPiece(pieceColor, ChessPiece.PieceType.ROOK);
+                case BISHOP -> new ChessPiece(pieceColor, ChessPiece.PieceType.BISHOP);
+                case KNIGHT -> new ChessPiece(pieceColor, ChessPiece.PieceType.KNIGHT);
+                case QUEEN -> new ChessPiece(pieceColor, ChessPiece.PieceType.QUEEN);
+                case KING -> new ChessPiece(pieceColor, ChessPiece.PieceType.KING);
+            };
+            return newPiece;
+        }
+        return null;
     }
 }
