@@ -69,6 +69,7 @@ public class ChessGame {
         Collection<ChessMove> potentialMoves = board.getPiece(startPosition).pieceMoves(board,startPosition);
         for (ChessMove move: potentialMoves) {
             try {
+                setTeamTurn(board.getPiece(startPosition).getTeamColor());
                 this.makeMove(move);
                 validMoves.add(move);
             } catch (InvalidMoveException e) {
@@ -85,7 +86,6 @@ public class ChessGame {
      */
     public void checkWithLegal (ChessMove move) throws InvalidMoveException {
         ChessPosition start = move.getStartPosition();
-        ChessPosition end = move.getEndPosition();
         ChessPiece movingPiece = board.getPiece(start);
 
         if (movingPiece == null) {
@@ -95,14 +95,6 @@ public class ChessGame {
         if (movingPiece.getTeamColor() != turn) {
             throw new InvalidMoveException(
                     "Invalid move: The piece being moved is not of the teamcolor who's turn it is.");
-        }
-        //hopefully redundant
-        if (!board.onBoard(end)) {
-            throw new InvalidMoveException("Invalid move: End position must be on the board.");
-        }
-        if (!board.onBoard(start) || board.emptySpaceOnBoard(start)) {
-            throw new InvalidMoveException(
-                    "Invalid move: Start position must be on the board and not empty.");
         }
 
         Collection<ChessMove> potentialMoves = board.getPiece(start).pieceMoves(board,start);
