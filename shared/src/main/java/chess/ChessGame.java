@@ -16,6 +16,7 @@ public class ChessGame {
     private ChessBoard lastBoard;
     private ArrayList<ChessMove> movesMade;
 
+
     public ChessGame() {
         setTeamTurn(TeamColor.WHITE);
         board = new ChessBoard();
@@ -190,9 +191,33 @@ public class ChessGame {
         return !isInCheck(teamColor) && noValidMoves(teamColor);
     }
 
-    public boolean noValidMoves(TeamColor color) {
+    private boolean noValidMoves(TeamColor teamColor) {
+        ArrayList<ChessPosition> allyPositions = allyPositions(teamColor);
+        for (ChessPosition ally: allyPositions) {
+            Collection<ChessMove> moves = validMoves(ally);
+            if (!moves.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-        throw new RuntimeException("Not implemented");
+    private ArrayList<ChessPosition> allyPositions(TeamColor teamColor) {
+        ArrayList<ChessPosition> allyPositions = new ArrayList<>();
+        for (int row = 1; row <= 8; row++) {
+            for (int col = 1; col <= 8; col++) {
+                ChessPosition pos = new ChessPosition(row, col);
+                if (allyAtPosition(pos, teamColor)) {
+                    allyPositions.add(pos);
+                }
+            }
+        }
+        return allyPositions;
+    }
+
+    private boolean allyAtPosition(ChessPosition pos, TeamColor teamColor) {
+        return !board.emptySpaceOnBoard(pos) &&
+                board.getPiece(pos).getTeamColor() == teamColor;
     }
 
 
