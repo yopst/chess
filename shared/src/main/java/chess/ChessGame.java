@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -12,6 +13,7 @@ public class ChessGame {
     private TeamColor turn;
     private ChessBoard board;
     private ChessBoard lastBoard;
+    private ArrayList<ChessMove> movesMade;
 
     public boolean finished;
 
@@ -19,6 +21,7 @@ public class ChessGame {
         setTeamTurn(TeamColor.WHITE);
         board = new ChessBoard();
         board.resetBoard();
+        movesMade = new ArrayList<>();
     }
 
     /**
@@ -62,7 +65,18 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        ArrayList<ChessMove> validMoves = new ArrayList<>();
+        Collection<ChessMove> potentialMoves = board.getPiece(startPosition).pieceMoves(board,startPosition);
+        for (ChessMove move: potentialMoves) {
+            try {
+                this.makeMove(move);
+                this.undoMove(move);
+
+            } catch (InvalidMoveException e) {
+                //don't add
+            }
+        }
+        return validMoves;
     }
 
     /**
@@ -72,6 +86,10 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
+        throw new RuntimeException("Not implemented");
+    }
+
+    public void undoMove(ChessMove move) {
         throw new RuntimeException("Not implemented");
     }
 
@@ -110,6 +128,9 @@ public class ChessGame {
     }
 
     public boolean noValidMoves(TeamColor color) {
+
+
+
         throw new RuntimeException("Not implemented");
     }
 
