@@ -69,19 +69,12 @@ public class ChessGame {
         Collection<ChessMove> potentialMoves = board.getPiece(startPosition).pieceMoves(board,startPosition);
         for (ChessMove move: potentialMoves) {
             try {
-                boolean wasInCheck = this.isInCheck(turn);
-                TeamColor colorInCheck = turn;
                 this.makeMove(move);
-
-                if (this.isInCheck(colorInCheck)) {
-                    this.undoMove();
-                    throw new InvalidMoveException("Invalid Move: Move does not get you out of check.");
-                }
                 validMoves.add(move);
-                this.undoMove();
             } catch (InvalidMoveException e) {
                 //don't add
             }
+            undoMove();
         }
         return validMoves;
     }
@@ -133,7 +126,7 @@ public class ChessGame {
         TeamColor movingPieceColor = movingPiece.getTeamColor();
 
         //physically move piece overwriting if attack
-        lastBoard = board; //not sure about this copy
+        lastBoard = new ChessBoard(board); //deep copy
         board.addPiece(start, null);
         if (move.getPromotionPiece() == null) {
             board.addPiece(end, movingPiece);

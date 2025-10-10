@@ -15,6 +15,18 @@ public class ChessBoard {
         
     }
 
+    public ChessBoard(ChessBoard board) {
+        this.board = new ChessPiece[8][8];
+        for (int row = 1; row <=8; row++) {
+            for (int col = 1; col <=8; col++) {
+                ChessPosition pos = new ChessPosition(row, col);
+                ChessPiece piece = board.getPiece(pos);
+                if (piece == null) continue;
+                this.addPiece(pos, new ChessPiece(piece.getTeamColor(), piece.getPieceType()));
+            }
+        }
+    }
+
     /**
      * Adds a chess piece to the chessboard
      *
