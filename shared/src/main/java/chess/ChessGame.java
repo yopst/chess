@@ -2,6 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -12,7 +13,6 @@ import java.util.Collection;
 public class ChessGame {
     private TeamColor turn;
     private ChessBoard board;
-    private ChessBoard lastBoard;
     private ArrayList<ChessMove> movesMade;
 
     public boolean finished;
@@ -80,12 +80,46 @@ public class ChessGame {
     }
 
     /**
+     * Checks conditions of a legal move unrelated to the King
+     */
+    public void checkWithLegal (ChessMove move) throws InvalidMoveException {
+        ChessPosition start = move.getStartPosition();
+        ChessPosition end = move.getEndPosition();
+        ChessPiece movingPiece = board.getPiece(start);
+        if (movingPiece == null) {
+            throw new InvalidMoveException(
+                    "Invalid move: there is no piece at start position.");
+        }
+        if (movingPiece.getTeamColor() != turn) {
+            throw new InvalidMoveException(
+                    "Invalid move: The piece being moved is not of the teamcolor who's turn it is.");
+        }
+        if (!board.onBoard(end)) {
+            throw new InvalidMoveException("Invalid move: End position must be on the board.");
+        }
+        if (!board.onBoard(start) || board.emptySpaceOnBoard(start)) {
+            throw new InvalidMoveException(
+                    "Invalid move: Start position must be on the board and not empty.");
+        }
+        Collection<ChessMove> potentialMoves = board.getPiece(start).pieceMoves(board,start);
+        if (!potentialMoves.contains(move)) {
+            throw new InvalidMoveException(
+                    "Invalid Move: Move being attempted not contained in potential moves.");
+        }
+    }
+
+    /**
      * Makes a move in a chess game
      *
      * @param move chess move to perform
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
+        ChessPosition start = move.getStartPosition();
+        ChessPosition end = move.getEndPosition();
+        ChessPiece movingPiece = board.getPiece(start);
+
+
         throw new RuntimeException("Not implemented");
     }
 
@@ -169,5 +203,22 @@ public class ChessGame {
             return newPiece;
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessGame chessGame = (ChessGame) o;
+        return turn == chessGame.turn && Objects.equals(board, chessGame.board) && Objects.equals(movesMade, chessGame.movesMade);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(turn, board, movesMade);
     }
 }
