@@ -70,12 +70,15 @@ public class ChessGame {
         for (ChessMove move: potentialMoves) {
             try {
                 boolean wasInCheck = this.isInCheck(turn);
+                TeamColor colorInCheck = turn;
                 this.makeMove(move);
-                if (wasInCheck && this.isInCheck(turn)) {
+
+                if (wasInCheck && this.isInCheck(colorInCheck)) {
+                    this.undoMove();
                     throw new InvalidMoveException("Invalid Move: Move does not get you out of check.");
                 }
+                validMoves.add(move);
                 this.undoMove();
-
             } catch (InvalidMoveException e) {
                 //don't add
             }
@@ -241,7 +244,8 @@ public class ChessGame {
             for (int col = 1; col <= 8; col++) {
                 ChessPosition pos = new ChessPosition(row, col);
                 ChessPiece piece = board.getPiece(pos);
-                if (piece.getPieceType() == ChessPiece.PieceType.KING &&
+                if (piece != null &&
+                        piece.getPieceType() == ChessPiece.PieceType.KING &&
                         piece.getTeamColor() == teamColor) {
                     return pos;
                 }
