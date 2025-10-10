@@ -13,9 +13,8 @@ import java.util.Objects;
 public class ChessGame {
     private TeamColor turn;
     private ChessBoard board;
+    private ChessBoard lastBoard;
     private ArrayList<ChessMove> movesMade;
-
-    public boolean finished;
 
     public ChessGame() {
         setTeamTurn(TeamColor.WHITE);
@@ -69,8 +68,12 @@ public class ChessGame {
         Collection<ChessMove> potentialMoves = board.getPiece(startPosition).pieceMoves(board,startPosition);
         for (ChessMove move: potentialMoves) {
             try {
+                boolean wasInCheck = this.isInCheck(turn);
                 this.makeMove(move);
-                this.undoMove(move);
+                if (wasInCheck && this.isInCheck(turn)) {
+                    throw new InvalidMoveException("Invalid Move: Move does not get you out of check.");
+                }
+                this.undoMove();
 
             } catch (InvalidMoveException e) {
                 //don't add
@@ -81,11 +84,13 @@ public class ChessGame {
 
     /**
      * Checks conditions of a legal move unrelated to the King
+     * Is it your turn and is in pieceMoves for the moving piece?
      */
     public void checkWithLegal (ChessMove move) throws InvalidMoveException {
         ChessPosition start = move.getStartPosition();
         ChessPosition end = move.getEndPosition();
         ChessPiece movingPiece = board.getPiece(start);
+
         if (movingPiece == null) {
             throw new InvalidMoveException(
                     "Invalid move: there is no piece at start position.");
@@ -94,6 +99,7 @@ public class ChessGame {
             throw new InvalidMoveException(
                     "Invalid move: The piece being moved is not of the teamcolor who's turn it is.");
         }
+        //hopefully redundant
         if (!board.onBoard(end)) {
             throw new InvalidMoveException("Invalid move: End position must be on the board.");
         }
@@ -101,6 +107,7 @@ public class ChessGame {
             throw new InvalidMoveException(
                     "Invalid move: Start position must be on the board and not empty.");
         }
+
         Collection<ChessMove> potentialMoves = board.getPiece(start).pieceMoves(board,start);
         if (!potentialMoves.contains(move)) {
             throw new InvalidMoveException(
@@ -118,13 +125,33 @@ public class ChessGame {
         ChessPosition start = move.getStartPosition();
         ChessPosition end = move.getEndPosition();
         ChessPiece movingPiece = board.getPiece(start);
+        this.checkWithLegal(move);
 
-
-        throw new RuntimeException("Not implemented");
+        //physically move piece overwriting if attack
+        lastBoard = board; //not sure about this copy
+        board.addPiece(start, null);
+        if (move.getPromotionPiece() == null) {
+            board.addPiece(end, movingPiece);
+        }
+        else {
+            board.addPiece(end, this.promotePiece(move));
+        }
+        movesMade.add(move);
+        this.changeTurns();
     }
 
-    public void undoMove(ChessMove move) {
-        throw new RuntimeException("Not implemented");
+
+    public void undoMove() {
+        if (movesMade.isEmpty()) {
+            throw new RuntimeException("No moves have been made to undo.");
+        }
+        if (lastBoard == null) {
+            throw new RuntimeException("Can't remember what the board looked like.");
+        }
+        board = lastBoard;
+        lastBoard = null; //no duplicate undos
+        movesMade.removeLast();
+        this.changeTurns();
     }
 
     /**
@@ -135,6 +162,8 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         throw new RuntimeException("Not implemented");
+
+
     }
 
     /**
@@ -162,8 +191,6 @@ public class ChessGame {
     }
 
     public boolean noValidMoves(TeamColor color) {
-
-
 
         throw new RuntimeException("Not implemented");
     }
