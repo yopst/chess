@@ -73,7 +73,7 @@ public class ChessGame {
                 TeamColor colorInCheck = turn;
                 this.makeMove(move);
 
-                if (wasInCheck && this.isInCheck(colorInCheck)) {
+                if (this.isInCheck(colorInCheck)) {
                     this.undoMove();
                     throw new InvalidMoveException("Invalid Move: Move does not get you out of check.");
                 }
@@ -130,6 +130,7 @@ public class ChessGame {
         ChessPosition end = move.getEndPosition();
         ChessPiece movingPiece = board.getPiece(start);
         this.checkWithLegal(move);
+        TeamColor movingPieceColor = movingPiece.getTeamColor();
 
         //physically move piece overwriting if attack
         lastBoard = board; //not sure about this copy
@@ -142,6 +143,10 @@ public class ChessGame {
         }
         movesMade.add(move);
         this.changeTurns();
+
+        if (this.isInCheck(movingPieceColor)) {
+            throw new InvalidMoveException("Invalid move: move resulted in check.");
+        }
     }
 
 
