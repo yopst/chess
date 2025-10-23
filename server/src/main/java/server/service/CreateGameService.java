@@ -6,6 +6,7 @@ import dataaccess.interfaces.AuthDAO;
 import dataaccess.interfaces.GameDAO;
 import request.CreateGameRequest;
 import response.CreateGameResponse;
+import server.exception.BadRequestException;
 import server.exception.EndpointException;
 import server.exception.UnauthorizedException;
 
@@ -24,6 +25,9 @@ public class CreateGameService {
         try {
             if (auth.getAuth(authToken) == null) {
                 throw new UnauthorizedException("unauthorized");
+            }
+            if (createGameRequest.gameName() == null) {
+                throw new BadRequestException("bad request");
             }
             //Allows multiple games of the same name.
             return new CreateGameResponse(gamesDB.createGame(createGameRequest.gameName()));

@@ -8,9 +8,7 @@ import server.exception.EndpointException;
 
 
 public abstract class BaseHandler<T, R> implements Handler {
-
     private final Gson gson = new Gson();
-
     protected record ErrorResponse(int status, String message) {}
 
     protected String authToken;
@@ -21,12 +19,14 @@ public abstract class BaseHandler<T, R> implements Handler {
             // Deserialize JSON body (if any)
             T requestObj = deserialize(ctx, getRequestClassType());
 
-            // Perform the actual business logic
+            // Perform the logic
             R successResponse = performRequest(requestObj);
 
             // Send success response
-            ctx.status(200);
-            ctx.json(successResponse);
+            String jsonResponse = gson.toJson(successResponse);
+            ctx.status(200)
+                    .contentType("application/json")
+                    .result(jsonResponse);
 
         } catch (EndpointException e) {
             sendError(ctx, e.getErrorCode(), e.getMessage());
@@ -45,8 +45,10 @@ public abstract class BaseHandler<T, R> implements Handler {
 
     protected void sendError(Context ctx, int status, String message) {
         ErrorResponse errorResponse = new ErrorResponse(status, "Error: " + message);
-        ctx.status(status);
-        ctx.json(errorResponse);
+        String jsonError = gson.toJson(errorResponse);
+        ctx.status(status)
+                .contentType("application/json")
+                .result(jsonError);
     }
 
     // Subclasses must define these

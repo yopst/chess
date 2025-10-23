@@ -15,12 +15,12 @@ public class Server {
     }
 
     private void registerRoutes() {
-//        javalin.post("/user", new RegisterHandler());
-//        javalin.post("/session", new LoginHandler());
-//        javalin.delete("/session", new LogoutHandler());
-//        javalin.get("/game", new ListHandler());
-//        javalin.post("/game", new CreateGameHandler());
-//        javalin.put("/game", new JoinGameHandler());
+        javalin.post("/user", new RegisterHandler());
+        javalin.post("/session", new LoginHandler());
+        javalin.delete("/session", new LogoutHandler());
+        javalin.get("/game", new ListHandler());
+        javalin.post("/game", new CreateGameHandler());
+        javalin.put("/game", new JoinGameHandler());
         javalin.delete("/db", new ClearHandler());
     }
 
