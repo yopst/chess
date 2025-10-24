@@ -21,7 +21,9 @@ public class ChessBoard {
             for (int col = 1; col <=8; col++) {
                 ChessPosition pos = new ChessPosition(row, col);
                 ChessPiece piece = board.getPiece(pos);
-                if (piece == null) continue;
+                if (piece == null) {
+                    continue;
+                }
                 this.addPiece(pos, new ChessPiece(piece.getTeamColor(), piece.getPieceType()));
             }
         }
