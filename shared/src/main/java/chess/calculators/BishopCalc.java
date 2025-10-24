@@ -8,7 +8,7 @@ import chess.ChessPosition;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class BishopCalc implements MoveCalc {
+public class BishopCalc extends MoveCalc {
     @Override
     public Collection<ChessMove> calcMoves(ChessBoard board, ChessPosition position) {
         ArrayList<ChessMove> validMoves = new ArrayList<>();

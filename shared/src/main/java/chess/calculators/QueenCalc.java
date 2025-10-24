@@ -7,7 +7,7 @@ import chess.ChessPosition;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class QueenCalc implements MoveCalc {
+public class QueenCalc extends MoveCalc {
     @Override
     public Collection<ChessMove> calcMoves(ChessBoard board, ChessPosition position) {
         ArrayList<ChessMove> validMoves = new ArrayList<>();

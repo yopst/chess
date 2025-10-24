@@ -8,7 +8,7 @@ import chess.ChessPosition;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class KingCalc implements MoveCalc {
+public class KingCalc extends MoveCalc {
     @Override
     public Collection<ChessMove> calcMoves(ChessBoard board, ChessPosition position) {
         ArrayList<ChessMove> validMoves = new ArrayList<>();
@@ -39,14 +39,7 @@ public class KingCalc implements MoveCalc {
         positions.add(left);
         positions.add(right);
 
-        for (ChessPosition pos: positions) {
-            if (board.emptySpaceOnBoard(pos)) {
-                validMoves.add(new ChessMove(position, pos));
-            }
-            else if (board.onBoard(pos) && board.getPiece(pos).getTeamColor() != color) {
-                validMoves.add(new ChessMove(position,pos));
-            }
-        }
+        addValidMoves(validMoves, positions, board, position, color);
 
         return validMoves;
     }

@@ -8,7 +8,7 @@ import chess.ChessPosition;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class RookCalc implements MoveCalc {
+public class RookCalc extends MoveCalc {
 
     @Override
     public Collection<ChessMove> calcMoves(ChessBoard board, ChessPosition position) {

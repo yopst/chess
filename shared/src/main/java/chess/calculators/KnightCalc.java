@@ -9,7 +9,7 @@ import chess.ChessPosition;
 import java.util.Collection;
 import java.util.ArrayList;
 
-public class KnightCalc implements MoveCalc {
+public class KnightCalc extends MoveCalc {
 
     @Override
     public Collection<ChessMove> calcMoves(ChessBoard board, ChessPosition position) {
@@ -41,14 +41,7 @@ public class KnightCalc implements MoveCalc {
         positions.add(shortL);
         positions.add(tallL);
 
-        for (ChessPosition pos: positions) {
-            if (board.emptySpaceOnBoard(pos)) {
-                validMoves.add(new ChessMove(position, pos));
-            }
-            else if (board.onBoard(pos) && board.getPiece(pos).getTeamColor() != color) {
-                validMoves.add(new ChessMove(position,pos));
-            }
-        }
+        addValidMoves(validMoves, positions, board, position, color);
 
         return validMoves;
     }
