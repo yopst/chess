@@ -1,8 +1,6 @@
 package dataaccess;
 
-import dataaccess.interfaces.AuthDAO;
-import dataaccess.interfaces.GameDAO;
-import dataaccess.interfaces.UserDAO;
+import dataaccess.interfaces.*;
 import dataaccess.memory.*;
 
 public class MyDatabaseManager {
@@ -12,14 +10,27 @@ public class MyDatabaseManager {
     private final UserDAO users;
 
     private MyDatabaseManager(boolean useMySql) {
-        games = new MemoryGame();
-        auth = new MemoryAuth();
-        users = new MemoryUser();
+        if (useMySql) {
+
+            try {
+                DatabaseManager.createDatabase();
+                games = new MySqlGame();
+                auth = new MySqlAuth();
+                users = new MySqlUser();
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            games = new MemoryGame();
+            auth = new MemoryAuth();
+            users = new MemoryUser();
+        }
     }
 
     public static MyDatabaseManager getInstance() {
         if (instance == null) {
-            instance = new MyDatabaseManager(false); //Change Database type with different Constructor
+            instance = new MyDatabaseManager(true); //Change Database type with different Constructor
         }
         return instance;
     }
