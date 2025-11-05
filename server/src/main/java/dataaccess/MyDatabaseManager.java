@@ -3,7 +3,7 @@ package dataaccess;
 import dataaccess.interfaces.*;
 import dataaccess.memory.*;
 
-public class MyDatabaseManager {
+public class MyDatabaseManager extends DatabaseManager {
     private static MyDatabaseManager instance;
     private final GameDAO games;
     private final AuthDAO auth;
@@ -13,7 +13,7 @@ public class MyDatabaseManager {
         if (useMySql) {
 
             try {
-                DatabaseManager.createDatabase();
+                createDatabase();
                 games = new MySqlGame();
                 auth = new MySqlAuth();
                 users = new MySqlUser();
