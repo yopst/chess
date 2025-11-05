@@ -52,6 +52,6 @@ public abstract class BaseHandler<T, R> implements Handler {
     }
 
     // Subclasses must define these
-    protected abstract R performRequest(T reqObj) throws Exception;
+    protected abstract R performRequest(T reqObj) throws EndpointException;
     protected abstract Class<T> getRequestClassType();
 }

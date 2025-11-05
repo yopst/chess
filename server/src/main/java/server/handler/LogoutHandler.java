@@ -3,11 +3,12 @@ package server.handler;
 import io.javalin.http.Handler;
 import request.LogoutRequest;
 import response.LogoutResponse;
+import server.exception.EndpointException;
 import server.service.LogoutService;
 
 public class LogoutHandler extends BaseHandler<LogoutRequest, LogoutResponse> implements Handler {
     @Override
-    protected LogoutResponse performRequest(LogoutRequest reqObj) throws Exception {
+    protected LogoutResponse performRequest(LogoutRequest reqObj) throws EndpointException {
         return new LogoutService().logout(authToken);
     }
 
