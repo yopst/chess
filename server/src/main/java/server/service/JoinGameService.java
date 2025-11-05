@@ -60,7 +60,7 @@ public class JoinGameService {
             return new JoinGameResponse();
         }
         catch (DataAccessException e) {
-            throw new EndpointException(e.getMessage(), 404);
+            throw new EndpointException(e.getMessage(), 500);
         }
     }
 }

@@ -15,7 +15,9 @@ public abstract class BaseSqlDao {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DataAccessException("Error executing update: " + e.getMessage());
+            throw new DataAccessException("Error executing update SQL: " + e.getMessage());
+        } catch (DataAccessException e) {
+            throw new DataAccessException("Error establishing connection to SQL db: " + e.getMessage());
         }
     }
 }

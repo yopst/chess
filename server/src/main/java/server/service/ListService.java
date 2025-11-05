@@ -28,7 +28,7 @@ public class ListService {
             return new ListResponse(games);
         }
         catch (DataAccessException e) {
-            throw new EndpointException(e.getMessage(), 404);
+            throw new EndpointException(e.getMessage(), 500);
         }
     }
 }
