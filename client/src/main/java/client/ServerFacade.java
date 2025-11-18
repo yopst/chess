@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.Objects;
 
 public class ServerFacade {
-    String authToken;
+    public String authToken;
     private final String serverUrl;
 
     public ServerFacade(String url) {
